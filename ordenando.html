@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="ordenando.js"></script>
+
+    <title>Ordenando</title>
+</head>
+
+<body class="d-flex flex-column vh-100">
+    <div class="container mt-5">
+        <h2>Ordenando Valores</h2>
+
+        <div class="mb-3">
+            <label for="valor" class="form-label">Valor:</label>
+            <input class="form-control" type="number" id="valor">
+        </div>
+
+        <button class="btn btn-primary mb-3" onclick="add()">Adicionar</button>
+
+        <div class="mb-3">
+            <label for="algoritmo" class="form-label">Escolha um algoritmo:</label>
+            <select class="form-control" id="algoritmo">
+                <option value="bubble_sort" selected>Bubble Sort</option>
+                <option value="selection_sort">Selection Sort</option>
+                <option value="quick_sort">Quick Sort</option>
+            </select>
+        </div>
+
+        <button class="btn btn-primary mb-3" onclick="ordenar()">Ordenar</button>
+
+        <button class="btn btn-primary mb-3" onclick="misturar()">Misturar</button>
+
+        <ul id="valores" class="list-group"></ul>
+    </div>
+    <script>
+
+        function add() {
+            const inputValue = document.getElementById('valor').value;
+            const valoresList = document.getElementById('valores');
+            const node = document.createElement('li');
+            const textNode = document.createTextNode(inputValue);
+            node.appendChild(textNode);
+
+            valoresList.appendChild(node);
+
+            document.getElementById('valor').value = '';
+            document.getElementById('valor').focus();
+        }
+
+        function ordenar() {
+            const valoresList = document.getElementById('valores');
+            const algoritmoSelecao = document.getElementById('algoritmo').value;
+
+            const valoresArray = Array.from(valoresList.children).map(li => parseInt(li.textContent));
+
+            if (algoritmoSelecao === 'bubble_sort') {
+                bubble_sort(valoresArray);
+            } else if (algoritmoSelecao === 'selection_sort') {
+                selection_sort(valoresArray);
+            } else if (algoritmoSelecao === 'quick_sort') {
+                quick_sort(valoresArray, 0, valoresArray.length - 1);
+            }
+            valoresList.innerHTML = '';
+            valoresArray.forEach(valor => {
+                const listItem = document.createElement('li');
+                listItem.textContent = valor;
+                valoresList.appendChild(listItem);
+            });
+        }
+
+        function misturar() {
+            const valoresList = document.getElementById('valores');
+
+            const valoresArray = Array.from(valoresList.children).map(li => parseInt(li.textContent));
+
+            shuffle(valoresArray, valoresArray.length);
+
+            valoresList.innerHTML = '';
+            valoresArray.forEach(valor => {
+                const listItem = document.createElement('li');
+                listItem.textContent = valor;
+                valoresList.appendChild(listItem);
+            });
+        }
+
+    </script>
+</body>
+
+</html>
